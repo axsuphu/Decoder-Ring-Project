@@ -114,7 +114,7 @@ const polybiusModule = (function () {
               acc.push(" "); // this is maintaining the spaces
             } else if (!(index % 2)) {
               acc.push(space + collect[index + 1]);
-              console.log("ACC", acc);
+              //console.log("ACC", acc);
             }
             return acc;
           }, []);
