@@ -1,23 +1,10 @@
-// Please refrain from tampering with the setup code provided here,
-// as the index.html and test files rely on this setup to work properly.
-// Only add code (helper methods, variables, etc.) within the scope
-// of the anonymous function on line 6
-//Requirements:
-// The input could include spaces and letters as well as special characters such as #, $, *, etc.
-// Spaces should be maintained throughout.
-// Capital letters can be ignored.
-// The alphabet parameter must be a string of exactly 26 characters, which could include special characters such as #, $, *, etc. Otherwise, it should return false.
-// All the characters in the alphabet parameter must be unique. Otherwise, it should return false.
-
 const substitutionModule = (function () {
-  // you can add any code you want within this function scope
-
   function substitution(input, alphabet, encode = true) {
-    // your solution code here
     //if alphabet parameter does not exist or alphabet length is not equal to 26, return false
     if (!alphabet || alphabet.length != 26) return false;
-    //loop through each character/letter in alphabet, return false if that char/letter is repeated
+    //loop through each character/letter in alphabet, return false if that char/letter is repeated.
     for (let i = 0; i < alphabet.length; i++) {
+      //if there are 2 indexes of the same value, that means it is repeated
       if (alphabet.indexOf(alphabet[i]) != alphabet.lastIndexOf(alphabet[i])) {
         return false;
       }
@@ -29,10 +16,10 @@ const substitutionModule = (function () {
     let normAlpha = "abcdefghijklmnopqrstuvwxyz ";
     let normAlphaArr = normAlpha.split("");
     alphabet += " "; //alphabet = alphabet + " " ; this adds a space inside alphabet. We wrote it this way bc we don't know what the alphabet input is going to be each time
-    let alphabetArr = alphabet.split(""); // .push works too bc it would have pushed a space into an array as well
+    let alphabetArr = alphabet.split("");
 
     //if we are turning  'thinkful' to 'jrufscpw'
-    if (encode === true) {
+    if (encode) {
       //use .map to make a new array of results
       // .map will interate through each letter and .indexOf will use normAlpha to find index of that current iterated letter
       let inputIndices = newInput.map((letter) => normAlphaArr.indexOf(letter));

@@ -1,26 +1,5 @@
-// Please refrain from tampering with the setup code provided here,
-// as the index.html and test files rely on this setup to work properly.
-// Only add code (helper methods, variables, etc.) within the scope
-// of the anonymous function on line 6
-//You are welcome to assume that no additional symbols will be included as part of the input. Only spaces and letters will be included.
-// When encoding, your output should still be a string.
-// When decoding, the number of characters in the string excluding spaces should be even. Otherwise, return false.
-// Spaces should be maintained throughout.
-// Capital letters can be ignored.
-// The letters I and J share a space. When encoding, both letters can be converted to 42, but when decoding, both letters should somehow be shown.
-
-// Examples:
-// polybius("thinkful"); //> "4432423352125413"
-// polybius("Hello world"); //> '3251131343 2543241341'
-
-// polybius("3251131343 4253241341", false); //> "hello world"
-// polybius("4432423352125413", false); //> "th(i/j)nkful
-// polybius("44324233521254134", false); //> false
-
 const polybiusModule = (function () {
-  // you can add any code you want within this function scope
-
-  // one object for decoding key && one for encoding key
+  // one object for decoding key & one for encoding key
   const decodeKey = {
     11: "a",
     21: "b",
@@ -79,51 +58,53 @@ const polybiusModule = (function () {
   };
 
   function polybius(input, encode = true) {
-    // your solution code here
-
-    // Capital letters can be ignored.
+    // ignore capital letters by converting original input to lowercase
     input = input.toLowerCase();
+    //splitString will be given a value depending on what we do later in the code
     let splitString;
-
-    // store the "encoded" key object as out starting key when true
+    // store the "encoded" key object as our starting key when true (true is default already)
     let key = encodeKey;
 
     if (encode) {
-      // 1. When encoding, your output should still be a string.
+      // when encoding, split input into array and store it in splitString
       splitString = input.split("");
     } else {
-      key = decodeKey; // store decoded key object as our key when false
+      // store "decoded" key object as our key when false
+      key = decodeKey;
+      //also, if there is a space, the characters will be seperated by a comma ie: [ '2345', '23513434112251' ]
       splitString = input.split(" ");
-
-      // 2. When decoding, the number of characters in the string excluding spaces should be even.
+      // when decoding, the number of characters in the string excluding spaces should be even. This will either return a 1 or a 0. 0 means it is an even number and it is false, 1 means that it is an odd number and it is true. "acc" is not holding any spaces
       const odd = splitString.reduce((acc, array) => acc + array.length, 0) % 2;
-      if (odd) return false; // Otherwise, return false bc it's odd
+      //if odd is true, return false
+      if (odd) return false;
 
       splitString = splitString
+        //use .map on splitString to iterate and return a string
         .map((section) => {
+          //for each section, split, and then reduce. Reduce has 4 parameters (acc is previous value, space is current value, index is index, and collect will be the array that is traversed)
           return section.split("").reduce((acc, space, index, collect) => {
             //i can utilize these parameters in reduce when iterating through array
-            //console.log("COLLECT", collect);
-            //console.log("ACC", acc);
-            //console.log("space", space);
-            //console.log("INDEX", index);
-            // maintain spaces throughout
+            // if space(current value) is an actual space,
             if (space === " ") {
-              // if true - push the space
-              //console.log("space", space);
+              // if true - push the space into acc
               acc.push(" "); // this is maintaining the spaces
+              //otherwise, if that current number is not an odd index,
             } else if (!(index % 2)) {
+              //add the string "space" to the string in collect at the index. this will make a string that has 2 digits and be pushed into acc
               acc.push(space + collect[index + 1]);
-              //console.log("ACC", acc);
             }
+            //return acc. acc is now an array of string numbers, seperated by commas
             return acc;
+            //[] indicated that we want this reduced acc in an array
           }, []);
         })
+        //after mapping, there will be 2 arrays in an array so we want to use reduce agaian to concatonate a space and "b" with "a"
         .reduce((a, b) => a.concat(" ", b));
     }
-
+    //this is where we finally utilize the encodeKey and decodeKey object.
+    //use map on string. for each iteration, find the value of key[space](this uses bracket notation to access the object). OR a space. use .join to create just one string
     let final = splitString.map((space) => key[space] || " ").join("");
-    //console.log("line 121 final", final);
+    //final is one string
     return final;
   }
 
